@@ -1,0 +1,23 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ] # Se déclenche quand vous envoyez sur la branche main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Inject API Key
+        run: |
+          # Remplace le placeholder par le secret configuré dans GitHub Settings
+          sed -i "s/__GROQ_API_KEY_PLACEHOLDER__/${{ secrets.GROQ_API_KEY_SECRET }}/g" script.js
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: . 
+          branch: gh-pages
